@@ -2,29 +2,37 @@ import dogFacade from "../api/dogFacade";
 import React, { useState, useEffect } from "react";
 
 export default function Dogs({ isLoggedIn, user }) {
+  let username = isLoggedIn ? `${user.username}` : "";
   const init = {
     dogName: "",
     age: "",
     breed: "",
     info: "",
-    userName: user.username,
+    userName: username,
   };
 
   const [dogInfo, setDogInfo] = useState(init);
+  const [myDogs, setMyDogs] = useState([init]);
+
+  const fetchData = () => {
+    dogFacade.getAllUsersDogs(username).then((data) => setMyDogs(data));
+  };
 
   const onChange = (evt) => {
     setDogInfo({
       ...dogInfo,
       [evt.target.id]: evt.target.value,
     });
-    console.log(dogInfo);
   };
 
   const addDog = (e) => {
     e.preventDefault();
     dogFacade.addDog(dogInfo);
-    console.log("I ADD DOG METODEN HER");
   };
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return (
     <div className="container-fluid padding">
@@ -33,11 +41,34 @@ export default function Dogs({ isLoggedIn, user }) {
         <div className="col-6 text-center">
           <h2 className="text-center mt-5 mb-2">Your own dog page</h2>
           <h3 className="text-center mt-5 mb-2">
-            Here you can add your own dogs to your account{" "}
+            If you are loggedin there will be an overview of your dogs:
           </h3>
           {isLoggedIn && (
             <div className="mt-5">
-              <p>*******************</p>
+              <p>Overview of all your dogs</p>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Dog name</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Breed </th>
+                    <th scope="col">Info </th>
+                    <th scope="col">Owner </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {myDogs.map((m) => (
+                    <tr key={m.dogName}>
+                      <td>{m.dogName}</td>
+                      <td>{m.age}</td>
+                      <td>{m.breed}</td>
+                      <td>{m.info}</td>
+                      <td>{m.userName}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
               <h4>Add a dog to your own personal doglist</h4>
               <div>
                 <form onChange={onChange}>
@@ -48,7 +79,6 @@ export default function Dogs({ isLoggedIn, user }) {
                   <button onClick={addDog}>Add dog to your dog list</button>
                 </form>
               </div>
-              <p>*******************</p>
             </div>
           )}
           <div className="col-3"></div>

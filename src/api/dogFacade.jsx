@@ -14,10 +14,22 @@ function addDog(dog) {
         else{ console.log("Network error"); }
      })
     }
+function getAllUsersDogs(userName){
+    return fetch(SERVER_URL + "/api/dogs/" + userName)
+    .then(handleHttpErrors)
+    .catch((err) => {
+      if (err.status) {
+        err.fullError.then((e) => console.log(e.message));
+      } else {
+        console.log("Network error");
+      }
+    });
+}
 
 
     const dogFacade = {
         addDog,
+        getAllUsersDogs,
     }    
 
     function makeOptions(method, body) {
