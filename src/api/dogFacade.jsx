@@ -26,10 +26,23 @@ function getAllUsersDogs(userName){
     });
 }
 
+function getAllDogBreeds(){
+    return fetch(SERVER_URL + "/api/breed")
+    .then(handleHttpErrors)
+    .catch((err) => {
+      if (err.status) {
+        err.fullError.then((e) => console.log(e.message));
+      } else {
+        console.log("Network error");
+      }
+    });
+}
+
 
     const dogFacade = {
         addDog,
         getAllUsersDogs,
+        getAllDogBreeds
     }    
 
     function makeOptions(method, body) {
