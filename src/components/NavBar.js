@@ -15,11 +15,11 @@ function NavBar({ loginMsg, isLoggedIn, user }) {
           </NavLink>
         </li>
         <li>
-          <NavLink activeClassName="active" to="/api-calls">
-            Api calls
+          <NavLink activeClassName="active" to="/dog-page">
+            Dog page
           </NavLink>
         </li>
-        {isLoggedIn && (
+        {isLoggedIn && roles === "admin" && (
           <>
             <li>
               <NavLink activeClassName="active" to="/secure-page">
