@@ -15,7 +15,7 @@ function addDog(dog) {
      })
     }
 function getAllUsersDogs(userName){
-    return fetch(SERVER_URL + "/api/dogs/" + userName)
+    return fetch(SERVER_URL + "/api/dogs" + userName)
     .then(handleHttpErrors)
     .catch((err) => {
       if (err.status) {
@@ -38,11 +38,25 @@ function getAllDogBreeds(){
     });
 }
 
+function getFactsAboutDog(dogbreed){
+    return fetch(SERVER_URL + "/api/breed/" + dogbreed)
+    .then(handleHttpErrors)
+    .catch((err) => {
+      if (err.status) {
+        err.fullError.then((e) => console.log(e.message));
+      } else {
+        console.log("Network error");
+      }
+    });
+}
+
+
 
     const dogFacade = {
         addDog,
         getAllUsersDogs,
-        getAllDogBreeds
+        getAllDogBreeds,
+        getFactsAboutDog
     }    
 
     function makeOptions(method, body) {
