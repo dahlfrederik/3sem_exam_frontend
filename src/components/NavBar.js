@@ -19,11 +19,11 @@ function NavBar({ loginMsg, isLoggedIn, user }) {
             Dog page
           </NavLink>
         </li>
-        {isLoggedIn && roles === "admin" && (
+        {isLoggedIn && (
           <>
             <li>
               <NavLink activeClassName="active" to="/secure-page">
-                Secure page
+                Admin
               </NavLink>
             </li>
           </>

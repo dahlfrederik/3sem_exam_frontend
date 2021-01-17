@@ -11,7 +11,7 @@ import Navbar from "./components/NavBar";
 import Home from "./pages/Home";
 import DogPage from "./pages/DogPage";
 import NoMatch from "./components/NoMatch";
-import SecurePage from "./pages/SecurePage";
+import Admin from "./pages/Admin";
 import facade from "./api/userFacade";
 import { LogIn, LoggedIn } from "./pages/Login";
 import jwt_decode from "jwt-decode";
@@ -42,7 +42,8 @@ function App() {
       <Route
         {...rest}
         render={() => {
-          return loggedIn === true && user.roles === "admin" ? (
+          return (loggedIn === true && user.roles === "admin") ||
+            user.roles === "admin,user" ? (
             children
           ) : (
             <Redirect to="/login-out" />
@@ -64,12 +65,13 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route exact path="/dog-page">
+          <Route path="/dog-page">
             <DogPage isLoggedIn={loggedIn} user={user} />
           </Route>
-          <PrivateRoute path="/secure-page">
-            <SecurePage />
+          <PrivateRoute path="/secure-page" exact>
+            <Admin />
           </PrivateRoute>
+
           <Route path="/login-out">
             {!loggedIn ? (
               <LogIn login={login} />

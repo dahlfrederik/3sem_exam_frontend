@@ -2,7 +2,7 @@ import SERVER_URL from "../util/Settings";
 
 function addDog(dog) {
     const options = makeOptions("POST",dog)
-    return fetch(SERVER_URL + "api/dogs", options)
+    return fetch(SERVER_URL + "/api/dogs", options)
     .then(handleHttpErrors)
     .catch(err =>{
         if(err.status){
@@ -15,7 +15,7 @@ function addDog(dog) {
      })
     }
 function getAllUsersDogs(userName){
-    return fetch(SERVER_URL + "/api/dogs" + userName)
+    return fetch(SERVER_URL + "/api/dogs/" + userName)
     .then(handleHttpErrors)
     .catch((err) => {
       if (err.status) {
@@ -50,13 +50,39 @@ function getFactsAboutDog(dogbreed){
     });
 }
 
+function getSearchesForSpecificBreed(dogbreed){
+    return fetch(SERVER_URL + "/api/breed/searches/" + dogbreed)
+    .then(handleHttpErrors)
+    .catch((err) => {
+      if (err.status) {
+        err.fullError.then((e) => console.log(e.message));
+      } else {
+        console.log("Network error");
+      }
+    });
+}
+
+function getAllSearches(){
+    return fetch(SERVER_URL + "/api/breed/searches")
+    .then(handleHttpErrors)
+    .catch((err) => {
+      if (err.status) {
+        err.fullError.then((e) => console.log(e.message));
+      } else {
+        console.log("Network error");
+      }
+    });
+}
+
 
 
     const dogFacade = {
         addDog,
         getAllUsersDogs,
         getAllDogBreeds,
-        getFactsAboutDog
+        getFactsAboutDog,
+        getAllSearches,
+        getSearchesForSpecificBreed
     }    
 
     function makeOptions(method, body) {
